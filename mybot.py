@@ -3,7 +3,7 @@ import requests
 import json
 import pymysql.cursors
 import signal
-
+#token stored ib variable so as to change as per requirement
 TOKEN="NjkwODIyMzUyNDY4MDQ5OTQx.XnXJZw.1Gt-WjoBaf061k6L0Y9w-f_N1w0"
 
 connection = pymysql.connect(host='remotemysql.com',

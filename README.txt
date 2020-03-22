@@ -1,4 +1,4 @@
-USE of the above script
+Bluestacks backend developer challenge.
 
 Simple discord bot that would reply hey to your hi.
 

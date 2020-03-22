@@ -4,13 +4,13 @@ import json
 import pymysql.cursors
 import signal
 #token stored ib variable so as to change as per requirement
-TOKEN="NjkwODIyMzUyNDY4MDQ5OTQx.XnXJZw.1Gt-WjoBaf061k6L0Y9w-f_N1w0"
+TOKEN="token"
 
 #conection details and MySQL connector so as to connect the database
-connection = pymysql.connect(host='remotemysql.com',
-                             user='UzkO1dL2uA',
-                             password='rUIhQpUxJg',
-                             db='UzkO1dL2uA',
+connection = pymysql.connect(host='HOSTNAME',
+                             user='USERAME',
+                             password='PASWORD',
+                             db='DATABASE',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
@@ -76,7 +76,7 @@ class MyClient(discord.Client):
                     cursor.execute(sql, (keyword))
                     connection.commit()
                 #print(a)
-                a='https://www.googleapis.com/customsearch/v1?key=AIzaSyC8d7W081agxdVieeHNa8vkZXI7BXa9XvQ&cx=017576662512468239146:omuauf_lfve&q='+a
+                a='https://www.googleapis.com/customsearch/v1?key=APICODE&cx=017576662512468239146:omuauf_lfve&q='+a
                 a=requests.get(a)
                 c=a.text
                 b=json.loads(c)

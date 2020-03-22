@@ -6,6 +6,7 @@ import signal
 #token stored ib variable so as to change as per requirement
 TOKEN="NjkwODIyMzUyNDY4MDQ5OTQx.XnXJZw.1Gt-WjoBaf061k6L0Y9w-f_N1w0"
 
+#conection details and MySQL connector so as to connect the database
 connection = pymysql.connect(host='remotemysql.com',
                              user='UzkO1dL2uA',
                              password='rUIhQpUxJg',
@@ -13,10 +14,17 @@ connection = pymysql.connect(host='remotemysql.com',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
+#MyClient inherits the discord.Client class so as to reuse the functionality for the same
 class MyClient(discord.Client):
 
     storage_list=[]
-    
+    '''list used here for store the histroy, 
+    in "!recent" command it is utilised for cheking recent same searches,
+    if we restart the server then this list will get initializes with previous histroy
+    '''
+    '''
+    On start of server below function initializes the prerequisites like history once discord client is run
+    '''
     async def on_ready(self, c=storage_list):
         print('Logged in as')
         print(self.user.name)
@@ -30,20 +38,22 @@ class MyClient(discord.Client):
             for i in result:
                 #print(i["keyword"])
                 self.storage_list.append(i["keyword"])
-        #finally:
-        #    connection.close()
-        #print('Input the value from file or data structure to the list here.')
-        #print(self.storage_list)
-
+    '''
+    on message what all functions our bot perform is handle via below function
+    '''
     async def on_message(self, message, c=storage_list):
         # we do not want the bot to reply to itself
         if message.author.id == self.user.id:
             return
         
+        # if person sends hi then bot should reply hey
         if message.content in ('hi', 'Hi', 'HI', 'hI', 'hey'):
             await message.channel.send('hey'.format(message))
-            #print(message.content, type(message.content))
-
+        '''    
+        if message is sent as hi then bot should reply hey
+        if message is sent as !google word then it searches for the word reply back provide top 5 links
+        if message is sent as !recent keyword then bot replies back the recent search consisting of that word
+        '''
         if message.content.startswith('!') :
             a = message.content.split(' ',1);
             if a[0].lower() == '!recent':
@@ -71,6 +81,7 @@ class MyClient(discord.Client):
                 c=a.text
                 b=json.loads(c)
                 try:
+                  #based on the no of link the in search result the output is generated.
                     l=len(b['items'])
                     if(l<5):
                         for i in range(len(b['items'])):
@@ -92,6 +103,8 @@ class MyClient(discord.Client):
 
 client = MyClient()
 
+#to handle the keyboard interrupt exception a decorator is taken into application(if we terminate the server).
+
 def decorator1(fun):
     def keyboardInterruptHandler(signal, frame):
         print("Exited the system due to Key board Intrrupt!!!")
@@ -107,6 +120,3 @@ def decorator1(fun):
     return keyboardInterruptHandler
 
 decorator1(client.run)
-
-
-
